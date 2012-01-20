@@ -19,6 +19,7 @@ typedef struct List {
 	bool (*is_empty)(struct List *self);
 	struct List* (*add)(struct List *self, void* element);
 	void* (*at)(struct List *self, int position);
+	void (*remove_element_at)(struct List *self, int position);
 	void (*destroy)(struct List *self);
 } List;
 
@@ -31,6 +32,7 @@ bool list_is_empty(List* self);
 List* list_add(List* self, void* element);
 int list_size(List* self);
 void* list_at(List* self, int position);
+void list_remove_element_at(List* self, int position);
 
 /* destruction */
 void list_destroy(List* self);
