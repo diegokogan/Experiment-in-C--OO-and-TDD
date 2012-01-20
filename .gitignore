@@ -1,5 +1,5 @@
 *.o
 *.out
 .cproject
-.project/*
+.project
 .settings/*
