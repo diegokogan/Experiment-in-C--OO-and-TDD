@@ -86,6 +86,9 @@ int main() {
 	run_test(retrieve_null_if_position_does_not_exists);
 	run_test(remove_the_only_one_element);
 	run_test(remove_first_element_in_a_list_of_two);
+	//iterators
+	//functional prog, collect, select, inject
+
 
 	show_success_message();
 }

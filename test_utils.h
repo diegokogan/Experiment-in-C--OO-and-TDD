@@ -1,7 +1,7 @@
 #ifndef TEST_UTILS_H_GUARD
 #define TEST_UTILS_H_GUARD
 
-#include <stdbool.h>
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

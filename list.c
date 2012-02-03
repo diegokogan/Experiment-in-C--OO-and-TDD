@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -25,13 +26,13 @@ List* add(List *self, void* element) {
 	return self;
 }
 
-void* at(List* self, int position) {
+ListNode* node_at(List* self, int position) {
 	ListNode* currentNode = self->first;
 	int i = 0;
 
 	while (currentNode != NULL) {
 		if (i == position) {
-			return currentNode->element;
+			return currentNode;
 		}
 		currentNode = currentNode->next;
 		i++;
@@ -40,29 +41,43 @@ void* at(List* self, int position) {
 	return NULL;
 }
 
+void* at(List* self, int position) {
+	ListNode* node_at_position = node_at(self, position);
+	return node_at_position != NULL ? node_at_position->element : NULL;
+}
+
 void remove_element_at(List* self, int position) {
 	if (list_size(self) == 0) {
 		return;
 	}
 
+	//repensarlo, next o prev pueden ser NULLs
 	if (list_size(self) == 1) {
 		free(self->first);
 		self->first = NULL;
 		self->last = NULL;
 		self->size = 0;
+		return;
 	}
 
-	ListNode* previousNode = self->first;
-	ListNode* currentNode = self->first->next;
-	int i = 0;
-
-	while (currentNode != NULL) {
-		if (i == position) {
-			currentNode->element;
-		}
-		currentNode = currentNode->next;
-		i++;
+	if (list_size(self) == 2) {
+		free(self->first);
+		self->first = NULL;
+		self->last = NULL;
+		self->size = 0;
+		return;
 	}
+
+	ListNode* currentNode = node_at(self, position);
+	ListNode* previousNode = currentNode->previous;
+	ListNode* nextNode = currentNode->next;
+
+	nextNode->previous = previousNode;
+	previousNode->next = nextNode;
+
+	free(currentNode);
+
+	self->size = self->size - 1;
 }
 
 void destroy(List* self) {
