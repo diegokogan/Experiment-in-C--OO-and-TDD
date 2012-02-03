@@ -46,38 +46,36 @@ void* at(List* self, int position) {
 	return node_at_position != NULL ? node_at_position->element : NULL;
 }
 
+void previous_node_point_next_to(List* self, ListNode* previous_node, ListNode* new_next_node) {
+	if (new_next_node != NULL && previous_node != NULL) {
+		previous_node->next = new_next_node;
+	}
+
+	if (new_next_node == NULL) {
+		self->last = previous_node;
+	}
+
+	if (previous_node == NULL) {
+		self->first = new_next_node;
+	}
+}
+
+void next_node_point_previous_to(List* self, ListNode* next_node, ListNode* new_previous_node) {
+	assert(false && "Not implemented yet");
+}
+
 void remove_element_at(List* self, int position) {
 	if (list_size(self) == 0) {
 		return;
 	}
 
-	//repensarlo, next o prev pueden ser NULLs
-	if (list_size(self) == 1) {
-		free(self->first);
-		self->first = NULL;
-		self->last = NULL;
-		self->size = 0;
-		return;
-	}
+	ListNode* node_to_remove = node_at(self, position);
 
-	if (list_size(self) == 2) {
-		free(self->first);
-		self->first = NULL;
-		self->last = NULL;
-		self->size = 0;
-		return;
-	}
-
-	ListNode* currentNode = node_at(self, position);
-	ListNode* previousNode = currentNode->previous;
-	ListNode* nextNode = currentNode->next;
-
-	nextNode->previous = previousNode;
-	previousNode->next = nextNode;
-
-	free(currentNode);
+	previous_node_point_next_to(self, node_to_remove->previous, node_to_remove->next);
+	next_node_point_previous_to(self, node_to_remove->next, node_to_remove->previous);
 
 	self->size = self->size - 1;
+	free(node_to_remove);
 }
 
 void destroy(List* self) {
